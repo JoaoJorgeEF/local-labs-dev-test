@@ -1,4 +1,6 @@
 class Story < ApplicationRecord
+    has_many :comments
+    belongs_to :organization
     belongs_to :writer, class_name: 'User'
     belongs_to :reviewer, class_name: 'User'
 
@@ -40,9 +42,10 @@ class Story < ApplicationRecord
             transition any => :archived, if: :chief_editor?
         end
 
-        after_transition any => :draft, do: :automatically_open_comments
-        after_transition pending: :draft, do: :automatically_open_comments_if_no_content
+        after_transition any => :draft, do: :open_comments
+        after_transition pending: :draft, do: :open_comments_if_no_content
         after_transition approved: :published, do: :automatically_publish
+        after_transition in_review: => any, do: :close_comments
 
         private
 
@@ -58,12 +61,16 @@ class Story < ApplicationRecord
             current_user == reviewer
         end
 
-        def automatically_open_comments
+        def open_comments
             self.comments_open = true
         end
+
+        def close_comments
+            selt.comments_open = false
+        end
     
-        def automatically_open_comments_if_no_content
-            automatically_open_comments if content.blank?
+        def open_comments_if_no_content
+            open_comments if content.blank?
         end
     
         def automatically_publish

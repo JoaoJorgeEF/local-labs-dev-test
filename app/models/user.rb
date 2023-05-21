@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :stories_to_write, class_name: 'Story', foreign_key: 'writer_id'
   has_many :stories_to_review, class_name: 'Story', foreign_key: 'reviewer_id'
+  has_many :comments
   belongs_to :organization
 
   VALID_TYPES = ['chief-editor', 'writer']
