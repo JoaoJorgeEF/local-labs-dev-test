@@ -34,6 +34,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
 
 
       t.timestamps null: false
+      t.string :organization_slug
 
     add_reference :stories, :writer, null: false
     add_reference :stories, :reviewer, null: false

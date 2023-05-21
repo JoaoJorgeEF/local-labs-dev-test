@@ -4,12 +4,12 @@ class User < ApplicationRecord
   has_many :comments
   belongs_to :organization
 
-  VALID_TYPES = ['chief-editor', 'writer']
+  VALID_TYPES = ['chief_editor', 'writer']
 
   validates :type, inclusion: { in: VALID_TYPES }
 
   def chief_editor?
-    status == 'chief-editor'
+    status == 'chief_editor'
   end
 
   # Include default devise modules. Others available are:
