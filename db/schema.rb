@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_21_154608) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_21_170750) do
   create_table "organizations", charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.string "slug"
@@ -26,6 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_21_154608) do
     t.datetime "updated_at", null: false
     t.bigint "writer_id", null: false
     t.bigint "reviewer_id", null: false
+    t.string "status"
     t.index ["reviewer_id"], name: "index_stories_on_reviewer_id"
     t.index ["writer_id"], name: "index_stories_on_writer_id"
   end

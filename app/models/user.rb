@@ -7,6 +7,10 @@ class User < ApplicationRecord
 
   validates :type, inclusion: { in: VALID_TYPES }
 
+  def chief_editor?
+    status == 'chief-editor'
+  end
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

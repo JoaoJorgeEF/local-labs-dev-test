@@ -29,6 +29,8 @@ gem "jbuilder"
 
 gem 'devise', '~> 4.2'
 
+gem 'state_machines'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
