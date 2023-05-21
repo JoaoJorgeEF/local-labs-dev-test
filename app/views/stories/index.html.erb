@@ -7,4 +7,12 @@
 
 <h1>Stories</h1>
 
+<ul>
+  <% @stories.each do |story| %>
+    <li>
+      <%= story.headline %>
+    </li>
+  <% end %>
+</ul>
+
 

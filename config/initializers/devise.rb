@@ -313,5 +313,7 @@ Devise.setup do |config|
 
   config.scoped_views = true
 
+  config.authentication_keys = [ :organization_slug, :email ]
+
   config.navigational_formats = ['*/*', :html, :turbo_stream]
 end
