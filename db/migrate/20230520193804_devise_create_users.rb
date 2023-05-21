@@ -34,11 +34,16 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
 
 
       t.timestamps null: false
+
+    add_reference :stories, :writer, null: false
+    add_reference :stories, :reviewer, null: false
     end
 
     add_index :users, :email,                unique: true
     add_index :users, :reset_password_token, unique: true
     # add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
+    add_foreign_key :stories, :users, column: :writer_id
+    add_foreign_key :stories, :users, column: :reviewer_id
   end
 end
