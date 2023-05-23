@@ -1,4 +1,6 @@
 class Story < ApplicationRecord
+    attr_accessor :story_status
+
     has_many :comments
     belongs_to :organization
     belongs_to :writer, class_name: 'User', optional: true
@@ -7,7 +9,7 @@ class Story < ApplicationRecord
     validates :headline, presence: true
     # validates :body, presence: true, length: { minimum: 10 }
 
-    state_machine :status, initial: :unassigned do
+    state_machine :story_status, initial: :unassigned do
         state :unassigned
         state :draft
         state :for_review
@@ -17,32 +19,32 @@ class Story < ApplicationRecord
         state :published
         state :archived
 
-        event :set_writer do
-            transition unassigned: :draft, if: :set_writer?
+        event :set_writer_event do
+            transition unassigned: :draft
         end
 
         event :request_review do
-            transition draft: :for_review, if: :request_review?
+            transition draft: :for_review
         end
 
         event :start_review do
-            transition for_review: :in_review, if: :start_review?
+            transition for_review: :in_review
         end
 
         event :request_changes do
-            transition in_review: :pending, if: :request_changes?
+            transition in_review: :pending
         end
 
         event :approve do
-            transition pending: :approved, if: :approve?
+            transition pending: :approved
         end
 
         event :publish do
-            transition approved: :published, if: :publish?
+            transition approved: :published
         end
 
         event :archive do
-            transition any => :archived, if: :archive?
+            transition any => :archived
         end
 
         after_transition any => :draft, do: :open_comments

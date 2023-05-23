@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_23_154527) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_23_170614) do
   create_table "comments", charset: "utf8mb4", force: :cascade do |t|
     t.text "body"
     t.bigint "user_id", null: false
@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_23_154527) do
     t.datetime "updated_at", null: false
     t.bigint "writer_id"
     t.bigint "reviewer_id"
-    t.string "status"
+    t.string "story_status"
     t.boolean "comments_open"
     t.bigint "organization_id", null: false
     t.index ["organization_id"], name: "index_stories_on_organization_id"
