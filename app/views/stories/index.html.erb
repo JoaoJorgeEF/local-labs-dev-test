@@ -10,11 +10,11 @@
 <ul>
   <% @stories.each do |story| %>
     <li>
-      <%= link_to story.headline, edit_organization_story_path(organization_id: @organization.id, id: story.id) %>                                         
+      <%= link_to story.headline, edit_story_path(id: story.id) %>                                         
     </li>
   <% end %>
 </ul>
 <% unless !current_user.chief_editor?%>
-  <%= link_to "New Story", new_organization_story_path(organization_id: @organization.id) %>
+  <%= link_to "New Story", new_story_path %>
 <% end %>
 

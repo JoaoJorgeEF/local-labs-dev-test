@@ -1,6 +1,6 @@
 <h1>Edit Story</h1>
 
-<%= form_with scope: :story, url: organization_story_path(@organization, @story), method: :put do |form| %>
+<%= form_with scope: :story, url: story_path(@organization, @story), method: :put do |form| %>
 
     <% if current_user.chief_editor? %>
         <div>
@@ -31,35 +31,33 @@
         <% end %>
     </div>
 
+    <% if current_user.chief_editor? %>
+        <div>
+            <%= form.submit 'Publish', formaction: change_status_path(id: @story.id, status: "publish") %>
+        </div>
 
-    <div>
-        <%= form.submit %>
-    </div>
+        <div>
+            <%= form.submit 'Archive', formaction: change_status_path(id: @story.id, status: "archive") %>
+        </div>
+    <% end %>
 
-<% end %>
+    <% if current_user.id == @story.writer_id %>
+        <div>
+            <%= form.submit "Save" %>
+        </div>
+        <div>
+            <%= form.submit "Request Review", formaction: change_status_path(id: @story.id, status: "request_review") %>
+        </div>
+    <% end %>
 
-<% if current_user.chief_editor? %>
-    <div>
-        <%= button_to 'Publish', publish_path(organization_id: @organization.id, id: @story.id), method: :patch %>
-    </div>
+    <% if current_user.id == @story.reviewer_id %>
+        <div>
+            <%= form.submit 'Approve', formaction: change_status_path(id: @story.id, status: "approve") %>
+        </div>
+        <div>
+            <%= form.submit 'Request Changes', formaction: change_status_path(id: @story.id, status: "request_changes") %>
+        </div>
+    <% end %>
 
-    <div>
-        <%= button_to 'Archive', archive_path(organization_id: @organization.id, id: @story.id), method: :patch %>
-    </div>
-<% end %>
-
-<% if current_user.id == @story.writer_id %>
-    <div>
-        <%= button_to 'Request Review', request_review_path(organization_id: @organization.id, id: @story.id), method: :patch %>
-    </div>
-<% end %>
-
-<% if current_user.id == @story.reviewer_id %>
-    <div>
-        <%= button_to 'Approve', approve_path(organization_id: @organization.id, id: @story.id), method: :patch %>
-    </div>
-    <div>
-        <%= button_to 'Request Changes', request_changes_path(organization_id: @organization.id, id: @story.id), method: :patch %>
-    </div>
 <% end %>
 

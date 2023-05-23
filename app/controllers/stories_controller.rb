@@ -1,5 +1,6 @@
 class StoriesController < ApplicationController
-  before_action :authenticate_user!
+  
+  skip_before_action :verify_authenticity_token
   before_action :set_organization
 
   def index
@@ -28,7 +29,7 @@ class StoriesController < ApplicationController
     end
 
     if @story.save
-      redirect_to organization_stories_path(organization_id: @organization.id)
+      redirect_to stories_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -58,91 +59,38 @@ class StoriesController < ApplicationController
     end
 
     if @story.update(story_params)
-      redirect_to organization_stories_path(organization_id: @organization.id)
+      redirect_to stories_path
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
-  def request_review
+  def change_status
     @story = Story.find(params[:id])
 
-    if current_user.id != @story.writer_id
+    if !current_user.chief_editor? && current_user.id != @story.reviewer_id && current_user.id != @story.writer_id
       render :edit, status: :unprocessable_entity
-    end
-
-    @story.request_review
-
-    if @story.save
-      redirect_to organization_stories_path(organization_id: @organization.id)
     else
-      render :edit, status: :unprocessable_entity
+      case params[:status]
+      when "request_review"
+        @story.request_review
+      when "request_changes"
+        @story.request_changes
+      when "approve"
+        @story.approve
+      when "publish"
+        @story.publish
+      when "archive"
+        @story.archive
+      end
+  
+      if @story.save
+        redirect_to stories_path
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
 
-  end
-
-  def request_changes
-    @story = Story.find(params[:id])
-
-    if current_user.id != @story.reviewer_id
-      render :edit, status: :unprocessable_entity
-    end
-
-    @story.request_changes
-
-    if @story.save
-      redirect_to organization_stories_path(organization_id: @organization.id)
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def approve
-    @story = Story.find(params[:id])
-
-    if current_user.id != @story.reviewer_id
-      render :edit, status: :unprocessable_entity
-    end
-
-    @story.approve
-
-    if @story.save
-      redirect_to organization_stories_path(organization_id: @organization.id)
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def publish
-    @story = Story.find(params[:id])
-
-    if !current_user.chief_editor?
-      render :edit, status: :unprocessable_entity
-    end
-
-    @story.publish
-
-    if @story.save
-      redirect_to organization_stories_path(organization_id: @organization.id)
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def archive
-    @story = Story.find(params[:id])
-
-    if !current_user.chief_editor?
-      render :edit, status: :unprocessable_entity
-    end
-
-    @story.archive
-
-    if @story.save
-      redirect_to organization_stories_path(organization_id: @organization.id)
-    else
-      render :edit, status: :unprocessable_entity
-    end
   end
 
   private
@@ -151,6 +99,6 @@ class StoriesController < ApplicationController
   end
 
   def set_organization
-    @organization = Organization.find(params[:organization_id])
+    @organization = Organization.find_by(slug: current_user.organization_slug)
   end
 end
