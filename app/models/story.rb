@@ -28,11 +28,11 @@ class Story < ApplicationRecord
         end
 
         event :back_to_draft do
-            transitions from:, to: :draft, after: :open_comments_if_no_content
+            transitions from: :pending, to: :draft, after: :open_comments_if_no_content
         end
     
         event :approve do
-            transitions from: :pending, to: :approved
+            transitions from: :in_review, to: :approved
         end
     
         event :publish do
@@ -51,6 +51,10 @@ class Story < ApplicationRecord
     belongs_to :reviewer, class_name: 'User', optional: true
 
     validates :headline, presence: true
+
+    def for_review?
+        story_status == "for_review"
+    end
     # validates :body, presence: true, length: { minimum: 10 }
 
     # state_machine :story_status, initial: :unassigned do

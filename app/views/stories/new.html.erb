@@ -22,7 +22,7 @@
   
   <div>
     <%= form.label :body %><br>
-    <%= form.text_area :body %><br>
+    <%= form.text_area :body, :disabled => true %><br>
     <% @story.errors.full_messages_for(:body).each do |message| %>
       <div><%= message %></div>
     <% end %>

@@ -10,7 +10,7 @@
 <ul>
   <% @stories.each do |story| %>
     <li>
-      <%= story.headline %>
+      <%= link_to story.headline, edit_organization_story_path(organization_id: @organization.id, id: story.id) %>                                         
     </li>
   <% end %>
 </ul>

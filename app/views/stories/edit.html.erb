@@ -1,0 +1,49 @@
+<h1>Edit Story</h1>
+
+<%= form_with scope: :story, url: organization_story_path(@organization, @story), method: :put do |form| %>
+
+    <% if current_user.chief_editor? %>
+        <div>
+            <%= form.label :writer %><br>
+            <%= form.select :writer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+        <div>
+
+        <div>
+            <%= form.label :reviewer %><br>
+            <%= form.select :reviewer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+        <div>
+    <% end %>
+
+
+    <div>
+        <%= form.label :headline %><br>
+        <%= form.text_field :headline %>
+        <% @story.errors.full_messages_for(:headline).each do |message| %>
+        <div><%= message %></div>
+        <% end %>
+    </div>
+    
+    <div>
+        <%= form.label :body %><br>
+        <%= form.text_area :body, :disabled => current_user.id != @story.writer_id %><br>
+        <% @story.errors.full_messages_for(:body).each do |message| %>
+        <div><%= message %></div>
+        <% end %>
+    </div>
+
+
+    <div>
+        <%= form.submit %>
+    </div>
+
+<% end %>
+
+<% if current_user.id == @story.reviewer_id %>
+    <div>
+        <%= button_to 'Approve', approve_path(organization_id: @organization.id, id: @story.id), method: :patch %>
+    </div>
+    <div>
+        <%= button_to 'Request Changes', request_changes_path(organization_id: @organization.id, id: @story.id), method: :patch %>
+    </div>
+<% end %>
+
