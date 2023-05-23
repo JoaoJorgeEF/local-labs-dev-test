@@ -53,8 +53,8 @@ class StoriesController < ApplicationController
   def update
     @story = Story.find(params[:id])
 
-    if current_user.id == @story.writer_id
-      @story.request_review
+    if @story.pending?
+      @story.back_to_draft
     end
 
     if @story.update(story_params)
@@ -62,6 +62,23 @@ class StoriesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def request_review
+    @story = Story.find(params[:id])
+
+    if current_user.id != @story.writer_id
+      render :edit, status: :unprocessable_entity
+    end
+
+    @story.request_review
+
+    if @story.save
+      redirect_to organization_stories_path(organization_id: @organization.id)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+
   end
 
   def request_changes

@@ -38,6 +38,12 @@
 
 <% end %>
 
+<% if current_user.id == @story.writer_id %>
+    <div>
+        <%= button_to 'Request Review', request_review_path(organization_id: @organization.id, id: @story.id), method: :patch %>
+    </div>
+<% end %>
+
 <% if current_user.id == @story.reviewer_id %>
     <div>
         <%= button_to 'Approve', approve_path(organization_id: @organization.id, id: @story.id), method: :patch %>

@@ -28,7 +28,8 @@ class Story < ApplicationRecord
         end
 
         event :back_to_draft do
-            transitions from: :pending, to: :draft, after: :open_comments_if_no_content
+            transitions from: :pending, to: :draft
+            # transitions from: :pending, to: :draft, after: :open_comments_if_no_content
         end
     
         event :approve do
@@ -54,6 +55,10 @@ class Story < ApplicationRecord
 
     def for_review?
         story_status == "for_review"
+    end
+
+    def pending?
+        story_status == "pending"
     end
     # validates :body, presence: true, length: { minimum: 10 }
 
