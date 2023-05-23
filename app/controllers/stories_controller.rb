@@ -113,7 +113,37 @@ class StoriesController < ApplicationController
     end
   end
 
+  def publish
+    @story = Story.find(params[:id])
 
+    if !current_user.chief_editor?
+      render :edit, status: :unprocessable_entity
+    end
+
+    @story.publish
+
+    if @story.save
+      redirect_to organization_stories_path(organization_id: @organization.id)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def archive
+    @story = Story.find(params[:id])
+
+    if !current_user.chief_editor?
+      render :edit, status: :unprocessable_entity
+    end
+
+    @story.archive
+
+    if @story.save
+      redirect_to organization_stories_path(organization_id: @organization.id)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
 
   private
   def story_params

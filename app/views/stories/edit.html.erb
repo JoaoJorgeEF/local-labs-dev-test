@@ -38,6 +38,16 @@
 
 <% end %>
 
+<% if current_user.chief_editor? %>
+    <div>
+        <%= button_to 'Publish', publish_path(organization_id: @organization.id, id: @story.id), method: :patch %>
+    </div>
+
+    <div>
+        <%= button_to 'Archive', archive_path(organization_id: @organization.id, id: @story.id), method: :patch %>
+    </div>
+<% end %>
+
 <% if current_user.id == @story.writer_id %>
     <div>
         <%= button_to 'Request Review', request_review_path(organization_id: @organization.id, id: @story.id), method: :patch %>
