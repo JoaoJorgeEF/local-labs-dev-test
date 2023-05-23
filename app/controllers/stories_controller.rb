@@ -24,11 +24,8 @@ class StoriesController < ApplicationController
 
     @story = Story.new(headline: story_params[:headline], body: story_params[:body], writer_id: story_params[:writer_id], reviewer_id: story_params[:reviewer_id], organization: @organization)
 
-    puts @story.story_status
     if @story.writer_id
-      @story.set_writer_event!
-      puts @story.story_status
-      puts @story.story_status.class
+      @story.set_writer
     end
 
     if @story.save
