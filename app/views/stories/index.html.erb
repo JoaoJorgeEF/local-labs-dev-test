@@ -5,6 +5,8 @@
   <%= button_to "Sign in", new_user_session_path %> 
 <% end %>
 
+<%= render 'stories/user', user: current_user %>
+
 <h1>Stories</h1>
 
 <ul>

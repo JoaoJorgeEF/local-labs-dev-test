@@ -1,3 +1,5 @@
+<%= render 'stories/user', user: current_user %>
+
 <h1>New Story</h1>
 
 <%= form_with scope: :story, url: stories_path(@organization, @story) do |form| %>

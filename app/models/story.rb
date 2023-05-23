@@ -24,11 +24,11 @@ class Story < ApplicationRecord
         end
 
         event :request_review do
-            transitions from: :draft, to: :for_review
+            transitions from: :draft, to: :for_review, after: :close_comments
         end
     
         event :start_review do
-            transitions from: :for_review, to: :in_review
+            transitions from: :for_review, to: :in_review, after: :open_comments
         end
     
         event :request_changes do
@@ -36,8 +36,8 @@ class Story < ApplicationRecord
         end
 
         event :back_to_draft do
-            transitions from: :pending, to: :draft
-            # transitions from: :pending, to: :draft, after: :open_comments_if_no_content
+            # transitions from: :pending, to: :draft
+            transitions from: :pending, to: :draft, after: :open_comments_if_no_content
         end
     
         event :approve do
@@ -126,17 +126,23 @@ class Story < ApplicationRecord
     #     after_transition approved: :published, do: :automatically_publish
     # end
 
-    # def open_comments
-    #     self.comments_open = true
-    # end
+    def open_comments
+        comments_open = true
+    end
 
-    # def close_comments
-    #     selt.comments_open = false
-    # end
+    def close_comments
+        comments_open = false
+    end
 
-    # def open_comments_if_no_content
-    #     open_comments if content.blank?
-    # end
+    def open_comments_if_no_content
+        open_comments if body.blank?
+    end
+
+    def close_comments_if_has_content
+        puts "AQUIIIIIIIIIIIIIIIIIIIIIIII O"
+        puts body.blank?
+        close_comments if !body.blank?
+    end
 
     # def automatically_publish
     #     publish if approved?

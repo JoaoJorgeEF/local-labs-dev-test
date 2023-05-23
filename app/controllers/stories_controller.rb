@@ -58,6 +58,8 @@ class StoriesController < ApplicationController
       @story.back_to_draft
     end
 
+    @story.close_comments_if_has_content
+
     if @story.update(story_params)
       redirect_to edit_story_path(@story.id)
     else
@@ -95,7 +97,7 @@ class StoriesController < ApplicationController
 
   private
   def story_params
-    params.require(:story).permit(:writer_id, :reviewer_id, :headline, :body)
+    params.require(:story).permit(:writer_id, :reviewer_id, :comments_open, :headline, :body)
   end
 
   def set_organization

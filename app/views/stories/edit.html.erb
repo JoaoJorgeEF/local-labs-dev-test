@@ -1,3 +1,5 @@
+<%= render 'stories/user', user: current_user %>
+
 <h1>Edit Story</h1>
 
 <%= form_with scope: :story, url: story_path(@story), method: :put do |form| %>
@@ -60,5 +62,13 @@
         </div>
     <% end %>
 
+<% end %>
+
+<h2>Comments</h2>
+<%= render @story.comments %>
+
+<% if @story.comments_open %>
+    <h2>Add a comment:</h2>
+    <%= render 'comments/form' %>
 <% end %>
 
