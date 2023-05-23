@@ -1,8 +1,8 @@
 class Story < ApplicationRecord
     has_many :comments
     belongs_to :organization
-    belongs_to :writer, class_name: 'User'
-    belongs_to :reviewer, class_name: 'User'
+    belongs_to :writer, class_name: 'User', optional: true
+    belongs_to :reviewer, class_name: 'User', optional: true
 
     validates :headline, presence: true
     # validates :body, presence: true, length: { minimum: 10 }

@@ -4,12 +4,12 @@
 
   <div>
     <%= form.label :writer %><br>
-    <%= form.select :writer_id, options_for_select(@users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+    <%= form.select :writer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
   <div>
 
   <div>
     <%= form.label :reviewer %><br>
-    <%= form.select :reviewer_id, options_for_select(@users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+    <%= form.select :reviewer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
   <div>
 
   <div>
