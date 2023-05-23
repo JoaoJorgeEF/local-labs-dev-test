@@ -1,6 +1,14 @@
 class Story < ApplicationRecord
     include AASM
 
+    has_many :comments
+    belongs_to :organization
+    belongs_to :writer, class_name: 'User', optional: true
+    belongs_to :reviewer, class_name: 'User', optional: true
+
+    validates :headline, presence: true
+
+
     aasm :column => 'story_status' do
         state :unassigned, initial: true
         state :draft
@@ -46,19 +54,32 @@ class Story < ApplicationRecord
 
     end
 
-    has_many :comments
-    belongs_to :organization
-    belongs_to :writer, class_name: 'User', optional: true
-    belongs_to :reviewer, class_name: 'User', optional: true
-
-    validates :headline, presence: true
+    def draft?
+        story_status == "draft"
+    end
 
     def for_review?
         story_status == "for_review"
     end
 
+    def in_review?
+        story_status == "in_review"
+    end
+
     def pending?
         story_status == "pending"
+    end
+
+    def approved?
+        story_status == "approved"
+    end
+
+    def published?
+        story_status == "published"
+    end
+
+    def archived?
+        story_status == "archived"
     end
     # validates :body, presence: true, length: { minimum: 10 }
 

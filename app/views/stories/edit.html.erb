@@ -1,6 +1,6 @@
 <h1>Edit Story</h1>
 
-<%= form_with scope: :story, url: story_path(@organization, @story), method: :put do |form| %>
+<%= form_with scope: :story, url: story_path(@story), method: :put do |form| %>
 
     <% if current_user.chief_editor? %>
         <div>
@@ -33,7 +33,7 @@
 
     <% if current_user.chief_editor? %>
         <div>
-            <%= form.submit 'Publish', formaction: change_status_path(id: @story.id, status: "publish") %>
+            <%= form.submit 'Publish', :disabled => !@story.approved?, formaction: change_status_path(id: @story.id, status: "publish") %>
         </div>
 
         <div>
@@ -45,17 +45,18 @@
         <div>
             <%= form.submit "Save" %>
         </div>
+
         <div>
-            <%= form.submit "Request Review", formaction: change_status_path(id: @story.id, status: "request_review") %>
+            <%= form.submit "Request Review", :disabled => !@story.draft?, formaction: change_status_path(id: @story.id, status: "request_review") %>
         </div>
     <% end %>
 
     <% if current_user.id == @story.reviewer_id %>
         <div>
-            <%= form.submit 'Approve', formaction: change_status_path(id: @story.id, status: "approve") %>
+            <%= form.submit 'Approve', :disabled => !@story.in_review?, formaction: change_status_path(id: @story.id, status: "approve") %>
         </div>
         <div>
-            <%= form.submit 'Request Changes', formaction: change_status_path(id: @story.id, status: "request_changes") %>
+            <%= form.submit 'Request Changes', :disabled => !@story.in_review?, formaction: change_status_path(id: @story.id, status: "request_changes") %>
         </div>
     <% end %>
 

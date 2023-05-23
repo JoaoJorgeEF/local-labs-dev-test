@@ -59,7 +59,7 @@ class StoriesController < ApplicationController
     end
 
     if @story.update(story_params)
-      redirect_to stories_path
+      redirect_to edit_story_path(@story.id)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -85,7 +85,7 @@ class StoriesController < ApplicationController
       end
   
       if @story.save
-        redirect_to stories_path
+        redirect_to edit_story_path(@story.id)
       else
         render :edit, status: :unprocessable_entity
       end
