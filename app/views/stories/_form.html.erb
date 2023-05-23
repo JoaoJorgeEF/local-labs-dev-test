@@ -1,4 +1,15 @@
 <%= form_with model: story do |form| %>
+
+  <div>
+    <%= form.label :writer %><br>
+    <%= form.select :writer_id, options_for_select(@users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+  <div>
+
+  <div>
+    <%= form.label :reviewer %><br>
+    <%= form.select :reviewer_id, options_for_select(@users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+  <div>
+
   <div>
     <%= form.label :headline %><br>
     <%= form.text_field :headline %>

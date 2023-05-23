@@ -5,7 +5,7 @@ class Story < ApplicationRecord
     belongs_to :reviewer, class_name: 'User'
 
     validates :headline, presence: true
-    validates :body, presence: true, length: { minimum: 10 }
+    # validates :body, presence: true, length: { minimum: 10 }
 
     state_machine :status, initial: :unassigned do
         state :unassigned

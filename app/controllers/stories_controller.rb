@@ -1,7 +1,10 @@
 class StoriesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_organization
+
+
   def index
-    @organization = Organization.where(slug: current_user.organization_slug).first
+    # @organization = Organization.where(slug: current_user.organization_slug).first
     @stories = Story.where(organization_id: @organization.id)
   end
 
@@ -10,14 +13,19 @@ class StoriesController < ApplicationController
   end
 
   def new
+    authorize Story, :chief_editor?
+
     @story = Story.new
+    @users = User.where(organization_slug: current_user.organization_slug).where.not(id: current_user.id)
   end
 
   def create
-    @story = Story.new(story_params)
+    authorize Story, :chief_editor?
+
+    @story = Story.new(headline: story_params[:headline], body: story_params[:body], writer_id: story_params[:writer_id], reviewer_id: story_params[:reviewer_id], organization: @organization)
 
     if @story.save
-      redirect_to @story
+      redirect_to organization_stories_path(organization_id: @organization.id)
     else
       render :new, status: :unprocessable_entity
     end
@@ -25,6 +33,10 @@ class StoriesController < ApplicationController
 
   private
   def story_params
-    params.require(:article).permit(:headline, :body)
+    params.require(:story).permit(:writer_id, :reviewer_id, :headline, :body)
+  end
+
+  def set_organization
+    @organization = Organization.find(params[:organization_id])
   end
 end
