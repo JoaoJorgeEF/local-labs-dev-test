@@ -14,5 +14,7 @@
     </li>
   <% end %>
 </ul>
-
+<% unless !current_user.chief_editor?%>
+  <%= link_to "New Story", new_story_path %>
+<% end %>
 

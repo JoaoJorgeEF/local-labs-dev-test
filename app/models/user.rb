@@ -6,10 +6,10 @@ class User < ApplicationRecord
 
   VALID_TYPES = ['chief_editor', 'writer']
 
-  validates :type, inclusion: { in: VALID_TYPES }
+  validates :user_type, inclusion: { in: VALID_TYPES }
 
   def chief_editor?
-    status == 'chief_editor'
+    user_type == 'chief_editor'
   end
 
   # Include default devise modules. Others available are:

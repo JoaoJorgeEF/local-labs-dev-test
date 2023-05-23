@@ -6,9 +6,12 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "stories#index"
 
-  resource :organization do
-    resource :stories
-  end
+  resources :stories
+  # resources :organization do
+  #   resources :stories do
+  #     resources :comments
+  #   end
+  # end
 
   # Defines the root path route ("/")
   # root "articles#index"

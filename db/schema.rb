@@ -53,7 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_21_175615) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "organization_slug"
-    t.string "type"
+    t.string "user_type"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organization_slug"], name: "fk_rails_9cb376db16"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
