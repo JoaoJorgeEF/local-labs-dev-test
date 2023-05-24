@@ -1,0 +1,38 @@
+<%= render 'stories/user', user: current_user %>
+
+<h1>New Story</h1>
+
+<%= form_with scope: :story, url: stories_path(@organization, @story) do |form| %>
+
+  <div>
+    <%= form.label :writer %><br>
+    <%= form.select :writer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+  <div>
+
+  <div>
+    <%= form.label :reviewer %><br>
+    <%= form.select :reviewer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+  <div>
+
+  <div>
+    <%= form.label :headline %><br>
+    <%= form.text_field :headline %>
+    <% @story.errors.full_messages_for(:headline).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  
+  <div>
+    <%= form.label :body %><br>
+    <%= form.text_area :body, :disabled => true %><br>
+    <% @story.errors.full_messages_for(:body).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+

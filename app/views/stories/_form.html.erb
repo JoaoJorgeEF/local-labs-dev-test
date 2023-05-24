@@ -1,0 +1,33 @@
+<%= form_with model: story do |form| %>
+
+  <div>
+    <%= form.label :writer %><br>
+    <%= form.select :writer_id, options_for_select(@users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+  <div>
+
+  <div>
+    <%= form.label :reviewer %><br>
+    <%= form.select :reviewer_id, options_for_select(@users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+  <div>
+
+  <div>
+    <%= form.label :headline %><br>
+    <%= form.text_field :headline %>
+    <% story.errors.full_messages_for(:headline).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  
+  <div>
+    <%= form.label :body %><br>
+    <%= form.text_area :body %><br>
+    <% story.errors.full_messages_for(:body).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

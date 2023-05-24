@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
-  devise_for :users
-  # get 'stories/index'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  root "stories#index"
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  root "stories#index"
+  
+  put 'stories/:id/change_status', to: 'stories#change_status', as: 'change_status'
+
+  resources :stories do
+    resources :comments
+  end
+
 end

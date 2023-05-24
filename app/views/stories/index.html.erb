@@ -5,4 +5,18 @@
   <%= button_to "Sign in", new_user_session_path %> 
 <% end %>
 
+<%= render 'stories/user', user: current_user %>
+
 <h1>Stories</h1>
+
+<ul>
+  <% @stories.each do |story| %>
+    <li>
+      <%= link_to story.headline, edit_story_path(id: story.id) %>                                         
+    </li>
+  <% end %>
+</ul>
+<% unless !current_user.chief_editor?%>
+  <%= link_to "New Story", new_story_path %>
+<% end %>
+

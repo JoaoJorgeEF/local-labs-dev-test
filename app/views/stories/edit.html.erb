@@ -1,0 +1,74 @@
+<%= render 'stories/user', user: current_user %>
+
+<h1>Edit Story</h1>
+
+<%= form_with scope: :story, url: story_path(@story), method: :put do |form| %>
+
+    <% if current_user.chief_editor? %>
+        <div>
+            <%= form.label :writer %><br>
+            <%= form.select :writer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+        <div>
+
+        <div>
+            <%= form.label :reviewer %><br>
+            <%= form.select :reviewer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+        <div>
+    <% end %>
+
+
+    <div>
+        <%= form.label :headline %><br>
+        <%= form.text_field :headline %>
+        <% @story.errors.full_messages_for(:headline).each do |message| %>
+        <div><%= message %></div>
+        <% end %>
+    </div>
+    
+    <div>
+        <%= form.label :body %><br>
+        <%= form.text_area :body, :disabled => current_user.id != @story.writer_id %><br>
+        <% @story.errors.full_messages_for(:body).each do |message| %>
+        <div><%= message %></div>
+        <% end %>
+    </div>
+
+    <% if current_user.chief_editor? %>
+        <div>
+            <%= form.submit 'Publish', :disabled => !@story.approved?, formaction: change_status_path(id: @story.id, status: "publish") %>
+        </div>
+
+        <div>
+            <%= form.submit 'Archive', formaction: change_status_path(id: @story.id, status: "archive") %>
+        </div>
+    <% end %>
+
+    <% if current_user.id == @story.writer_id %>
+        <div>
+            <%= form.submit "Save" %>
+        </div>
+
+        <div>
+            <%= form.submit "Request Review", :disabled => !@story.draft?, formaction: change_status_path(id: @story.id, status: "request_review") %>
+        </div>
+    <% end %>
+
+    <% if current_user.id == @story.reviewer_id %>
+        <div>
+            <%= form.submit 'Approve', :disabled => !@story.in_review?, formaction: change_status_path(id: @story.id, status: "approve") %>
+        </div>
+        <div>
+            <%= form.submit 'Request Changes', :disabled => !@story.in_review?, formaction: change_status_path(id: @story.id, status: "request_changes") %>
+        </div>
+    <% end %>
+
+<% end %>
+
+<h2>Comments</h2>
+<%= render @story.comments %>
+
+<% if @story.comments_open %>
+    <h2>Add a comment:</h2>
+    <%= render 'comments/form' %>
+<% end %>
+
