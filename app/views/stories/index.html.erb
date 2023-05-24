@@ -7,16 +7,25 @@
 
 <%= render 'stories/user', user: current_user %>
 
+<div class="ml-6 mt-6">
+  <h1 class="font-bold text-xl"><%= @organization.name %></h1>
+</div>
+
+
 <h1>Stories</h1>
 
-<ul>
-  <% @stories.each do |story| %>
-    <li>
-      <%= link_to story.headline, edit_story_path(id: story.id) %>                                         
-    </li>
+<div class="grid place-items-center mt-2">
+  <ul>
+    <% @stories.each do |story| %>
+      <li>
+        <%= link_to story.headline, edit_story_path(id: story.id) %>                                         
+      </li>
+    <% end %>
+  </ul>
+  <% unless !current_user.chief_editor?%>
+    <%= link_to "New Story", new_story_path %>
   <% end %>
-</ul>
-<% unless !current_user.chief_editor?%>
-  <%= link_to "New Story", new_story_path %>
-<% end %>
+</div>
+
+
 
