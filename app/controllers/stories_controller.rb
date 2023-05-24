@@ -1,10 +1,8 @@
 class StoriesController < ApplicationController
-  
   skip_before_action :verify_authenticity_token
   before_action :set_organization
 
   def index
-    # @organization = Organization.where(slug: current_user.organization_slug).first
     @stories = Story.where(organization_id: @organization.id)
   end
 
