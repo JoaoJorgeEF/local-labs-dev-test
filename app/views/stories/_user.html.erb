@@ -1,8 +1,17 @@
-<div>
-    <span>
-        <%= user.name %>
-    </span>
-    <span>
-        <%= user.user_type %>
-    </span>
+<div class="grid justify-items-end">
+    <% if user_signed_in? %> 
+    <%= button_to "Logout", destroy_user_session_path, method: :delete %> 
+    <% else %>
+    <%= button_to "Sign in", new_user_session_path %> 
+    <% end %>
+
+    <div>
+        <span>
+            <%= user.name %>
+        </span>
+        <span>
+            <%= user.user_type %>
+        </span>
+    </div>
 </div>
+

@@ -31,3 +31,6 @@
 
 en:
   hello: "Hello world"
+  user_profile:
+    chief_editor: CHIEF EDITOR
+    writer: WRITER
