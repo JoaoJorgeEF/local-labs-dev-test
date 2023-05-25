@@ -1,9 +1,12 @@
-<p>
-    <strong>Commenter:</strong>
-    <%= comment.user.email %>
-</p>
+<div class="m-2">
+    <div class="text-gray-600">
+        <%= comment.user&.name %>:
+    </div>
 
-<p>
-    <strong>Comment:</strong>
-    <%= comment.body %>
-</p>
+    <div class="border-solid border-2">
+        <span class="m-2">
+            <%= comment.body %>
+        </span>
+        
+    </div>
+</div>

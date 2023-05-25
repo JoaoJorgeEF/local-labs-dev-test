@@ -54,6 +54,10 @@ class Story < ApplicationRecord
 
     end
 
+    def unassigned?
+        story_status == "unassigned"
+    end
+
     def draft?
         story_status == "draft"
     end
@@ -139,8 +143,6 @@ class Story < ApplicationRecord
     end
 
     def close_comments_if_has_content
-        puts "AQUIIIIIIIIIIIIIIIIIIIIIIII O"
-        puts body.blank?
         close_comments if !body.blank?
     end
 

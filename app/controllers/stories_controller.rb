@@ -48,6 +48,9 @@ class StoriesController < ApplicationController
     if @story.pending?
       @story.back_to_draft
     end
+    if story_params[:writer_id] && @story.unassigned?
+      @story.set_writer
+    end
 
     @story.close_comments_if_has_content
 

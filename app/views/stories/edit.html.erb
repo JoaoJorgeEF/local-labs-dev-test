@@ -1,6 +1,6 @@
 <%= render 'stories/navbar', organization: @organization, user: current_user %>
 
-<h2> <%= link_to "Home", stories_path %> > <%= @story.headline %> </h2>
+<h2 class="text-xl"> <%= link_to "Home", stories_path %> > <%= @story.headline %> </h2>
 
 <div class="w-full">
     <div class="border-solid border-2 w-full pb-2 mb-4">
@@ -141,16 +141,20 @@
 
 
 
+<div class="mt-12">
+    <h1 class="mb-2 text-xl">Comments (<%= @story.comments&.count() %>)</h1>
+    <div  class="border-solid border-2 w-full pb-2 mb-4">
+        
+        <%= render @story.comments %>
 
-
-<div  class="border-solid border-2 w-full pb-2 mb-4">
-    <h2>Comments</h2>
-    <%= render @story.comments %>
-
-    <% if @story.comments_open %>
-        <h2>Add a comment:</h2>
+        <% if @story.comments_open %>
+        <div class="w-full">
         <%= render 'comments/form' %>
-    <% end %>
+        </div>
+            
+        <% end %>
+    </div>
 </div>
+
 
 
