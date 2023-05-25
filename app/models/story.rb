@@ -23,11 +23,11 @@ class Story < ApplicationRecord
         end
 
         event :request_review do
-            transitions from: :draft, to: :for_review, after: :close_comments
+            transitions from: :draft, to: :for_review
         end
     
         event :start_review do
-            transitions from: :for_review, to: :in_review, after: :open_comments
+            transitions from: :for_review, to: :in_review
         end
     
         event :request_changes do
@@ -35,11 +35,11 @@ class Story < ApplicationRecord
         end
 
         event :back_to_draft do
-            transitions from: :pending, to: :draft, after: :open_comments_if_no_content
+            transitions from: :pending, to: :draft
         end
     
         event :approve do
-            transitions from: :in_review, to: :approved, after: :close_comments
+            transitions from: :in_review, to: :approved
         end
     
         event :publish do
@@ -82,22 +82,6 @@ class Story < ApplicationRecord
 
     def archived?
         story_status == "archived"
-    end
-
-    def open_comments
-        comments_open = true
-    end
-
-    def close_comments
-        comments_open = false
-    end
-
-    def open_comments_if_no_content
-        open_comments if !has_body?
-    end
-
-    def close_comments_if_has_content
-        close_comments if has_body?
     end
 
     def has_body?

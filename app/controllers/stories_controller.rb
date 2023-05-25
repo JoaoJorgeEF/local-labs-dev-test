@@ -52,8 +52,6 @@ class StoriesController < ApplicationController
       @story.set_writer
     end
 
-    @story.close_comments_if_has_content
-
     if @story.update(story_params)
       redirect_to edit_story_path(@story.id)
     else
