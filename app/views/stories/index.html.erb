@@ -1,18 +1,39 @@
 <%= render 'stories/navbar', organization: @organization, user: current_user %>
 
 <div>
-  <h1 class="font-bold text-2xl">Stories</h1>
+  <div>
+    <h1 class="font-bold text-2xl">Stories</h1>
 
-  <% unless !current_user.chief_editor?%>
-    <%= link_to "New Story", new_story_path %>
-  <% end %>
+    <div class="grid justify-items-end mb-4">
+      <% unless !current_user.chief_editor?%>
+        <%= link_to "New", new_story_path, class: 'border-solid border-2 px-4 py-1 cursor-pointer bg-cyan-500 hover:bg-cyan-700 text-slate-200' %>
+      <% end %>
+    </div>
+  </div>
+
 
   <div class="grid place-items-center  w-full h-full">
     
     <% @stories.each do |story| %>
-      <div class="border-solid border-2 w-full">
-        <h2><%= link_to story.headline, edit_story_path(id: story.id) %></h2>
-        <%= render 'stories/status', story: story %>
+      <div class="border-solid border-2 w-full pb-2 mb-4">
+        <div class="mt-2 mx-2 flex items-center">
+          <div class="flex flex-col">
+            <h2 class="font-bold text-xl text-gray-500"><%= link_to story.headline, edit_story_path(id: story.id) %></h2>
+          </div>
+          <div class="ml-auto">
+            <%= render 'stories/status', story: story %>
+          </div>
+        </div>
+        <div class="ml-2">
+          <span class="w-64">
+            Writer: <%= story&.writer != nil ? story.writer.name : "None" %>
+          </span>
+          <span class="ml-24">
+            Reviewer: <%= story&.reviewer != nil ? story.reviewer.name : "None" %>
+          </span>
+
+        </div>
+
       </div>
     <% end %>
   
