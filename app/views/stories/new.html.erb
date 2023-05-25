@@ -1,38 +1,73 @@
-<%= render 'stories/user', user: current_user %>
+<%= render 'stories/navbar', organization: @organization, user: current_user %>
 
-<h1>New Story</h1>
+<h2> <%= link_to "Home", stories_path %> > New story </h2>
 
-<%= form_with scope: :story, url: stories_path(@organization, @story) do |form| %>
-
-  <div>
-    <%= form.label :writer %><br>
-    <%= form.select :writer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
-  <div>
-
-  <div>
-    <%= form.label :reviewer %><br>
-    <%= form.select :reviewer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
-  <div>
-
-  <div>
-    <%= form.label :headline %><br>
-    <%= form.text_field :headline %>
-    <% @story.errors.full_messages_for(:headline).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
-  
-  <div>
-    <%= form.label :body %><br>
-    <%= form.text_area :body, :disabled => true %><br>
-    <% @story.errors.full_messages_for(:body).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
-  </div>
+<div class="w-full">
+    <div class="border-solid border-2 w-full pb-2 mb-4">
 
 
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+
+
+
+      <%= form_with scope: :story, url: stories_path(@organization, @story) do |form| %>
+      <div class="mt-6 mx-4">
+        <div class="flex items-center">
+          <div>
+            <%= form.label "Headline: " %>
+            <%= form.text_field :headline %>
+            <% @story.errors.full_messages_for(:headline).each do |message| %>
+              <div><%= message %></div>
+            <% end %>
+          </div>
+          <div class="ml-auto">
+            <%= render 'stories/status', story: @story %>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <span>
+            <%= form.label "Writer: " %>
+            <%= form.select :writer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+          </span>
+
+          <span class="ml-4">
+            <%= form.label "Reviewer: " %>
+            <%= form.select :reviewer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+          </span>
+        </div>
+
+        <div class="mt-8 w-full">
+          <%= form.text_area :body, rows: 10 , style: 'width:100%', :disabled => true %><br>
+          <% @story.errors.full_messages_for(:body).each do |message| %>
+            <div><%= message %></div>
+          <% end %>
+        </div>
+
+        <div class="flex items-center">
+          <div></div>
+          <div class="ml-auto">
+            <span>
+              <%= link_to "Cancel", stories_path, class: 'px-4 py-2 cursor-pointer bg-gray-300 hover:bg-gray-500' %>
+            </span>
+            <span>
+              <%= form.submit "Save", class: 'px-4 py-1.5 cursor-pointer bg-cyan-500 hover:bg-cyan-700 text-slate-200' %>
+            </span>
+            
+          </div>
+        </div>
+      </div>
+
+      <% end %>
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+
 
