@@ -58,7 +58,8 @@
                                 <span>
                                     <%= form.submit 'Archive',
                                     class: 'px-4 py-1.5 cursor-pointer bg-gray-500 hover:bg-gray-700 text-slate-200 w-40', 
-                                    formaction: change_status_path(id: @story.id, status: "archive") %>
+                                    formaction: change_status_path(id: @story.id, status: "archive"),
+                                    :disabled => !@story.approved? %>
                                 </span>
                             <% end %>
 
@@ -86,7 +87,7 @@
                             <%= form.submit "Request Review",
                                 class: 'px-4 py-1.5 cursor-pointer bg-cyan-500 hover:bg-cyan-700 text-slate-200 w-40',
                                 formaction: change_status_path(id: @story.id, status: "request_review"), 
-                                :disabled => !@story.draft?%>
+                                :disabled => !@story.draft? || !@story.has_body? %>
                         </div>
 
                         <div class="ml-auto">
@@ -140,21 +141,24 @@
 </div>
 
 
-
-<div class="mt-12">
-    <h1 class="mb-2 text-xl">Comments (<%= @story.comments&.count() %>)</h1>
-    <div  class="border-solid border-2 w-full pb-2 mb-4">
-        
-        <%= render @story.comments %>
-
-        <% if @story.comments_open %>
-        <div class="w-full">
-        <%= render 'comments/form' %>
-        </div>
+<%# Comments  %>
+<% if policy(:story).can_comment?(@story) %>
+    <div class="mt-12">
+        <h1 class="mb-2 text-xl">Comments (<%= @story.comments&.count() %>)</h1>
+        <div  class="border-solid border-2 w-full pb-2 mb-4">
             
-        <% end %>
+            <%= render @story.comments %>
+
+            <% if (@story.draft? && !@story.has_body?) || @story.in_review? %>
+                <div class="w-full">
+                <%= render 'comments/form' %>
+                </div>
+                
+            <% end %>
+        </div>
     </div>
-</div>
+<% end %>
+
 
 
 

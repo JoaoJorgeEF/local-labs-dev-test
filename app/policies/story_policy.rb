@@ -12,5 +12,9 @@ class StoryPolicy < ApplicationPolicy
 
   def write?
     user.id == record.writer.id
-end
+  end
+
+  def can_comment?(record_as_param)
+    user.chief_editor? || user.id == record_as_param.writer_id || user.id == record_as_param.reviewer_id
+  end
 end
