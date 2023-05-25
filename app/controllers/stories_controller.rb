@@ -38,13 +38,6 @@ class StoriesController < ApplicationController
 
     if current_user.chief_editor?
       @users = User.where(organization_slug: current_user.organization_slug).where.not(id: current_user.id)
-    elsif current_user.id == @story.reviewer_id
-
-      if @story.for_review?
-        @story.start_review
-        @story.save
-      end
-
     end
     
   end
@@ -74,6 +67,8 @@ class StoriesController < ApplicationController
       case params[:status]
       when "request_review"
         @story.request_review
+      when "start_review"
+        @story.start_review
       when "request_changes"
         @story.request_changes
       when "approve"
