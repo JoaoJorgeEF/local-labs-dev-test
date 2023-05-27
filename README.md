@@ -34,3 +34,9 @@ u3 = User.new(email: "louislitt@gmail.com", name: "Louis Litt", encrypted_passwo
 ```
 
 PS: since Devise was used to create the `User` model, the password field only accepts encrypted values using `Bcrypt`, you can use the value used above wich is the password `123456` or generate your own using  https://bcrypt-generator.com/
+
+You can access the application on:
+
+```sh 
+localhost:3000
+```
