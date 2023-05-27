@@ -22,22 +22,29 @@
                 </div>
 
                 <div class="mt-4">
-                    <% if current_user.chief_editor? %>
+                    <% if current_user.chief_editor? && @story.draft? %>
                         <span>
                             <%= form.label "Writer: " %>
-                            <%= form.select :writer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+                            <%= form.select :reviewer_id, options_for_select([["", nil]] + @users.map { |user| [user.name, user.id] }, default: @story.writer_id), {}, { class: 'form-control' } %>
                         </span>
 
                         <span class="ml-4">
                             <%= form.label "Reviewer: " %>
-                            <%= form.select :reviewer_id, options_for_select([["", nil]] + @users.map { |user| [user.email, user.id] }), {}, { class: 'form-control' } %>
+                            <%= form.select :reviewer_id, options_for_select([["", nil]] + @users.map { |user| [user.name, user.id] }), {}, { class: 'form-control' } %>
+                        </span>
+                    <% else %>
+                        <span class="w-64">
+                            Writer: <%= @story&.writer != nil ? @story.writer.name : "None" %>
+                        </span>
+                        <span class="ml-24">
+                            Reviewer: <%= @story&.reviewer != nil ? @story.reviewer.name : "None" %>
                         </span>
                     <% end %>
 
                 </div>
 
                 <div class="mt-8 w-full">
-                    <%= form.text_area :body, rows: 10 , style: 'width:100%', :disabled => current_user.id != @story.writer_id %><br>
+                    <%= form.text_area :body, placeholder:'Write a story...', rows: 10 , style: 'width:100%', :disabled => current_user.id != @story.writer_id || !@story.draft? %><br>
                     <% @story.errors.full_messages_for(:body).each do |message| %>
                     <div><%= message %></div>
                     <% end %>
@@ -95,7 +102,7 @@
                                 <%= link_to "Cancel", stories_path, class: 'px-4 py-2 cursor-pointer bg-gray-300 hover:bg-gray-500' %>
                             </span>
                             <span class="ml-2">
-                                <%= form.submit "Save", class: 'px-4 py-1.5 cursor-pointer bg-cyan-500 hover:bg-cyan-700 text-slate-200' %>
+                                <%= form.submit "Save", class: 'px-4 py-1.5 cursor-pointer bg-cyan-500 hover:bg-cyan-700 text-slate-200', :disabled => !@story.draft? %>
                             </span>
                         </div>
                     
