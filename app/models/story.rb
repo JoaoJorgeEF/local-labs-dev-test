@@ -7,9 +7,6 @@ class Story < ApplicationRecord
     belongs_to :reviewer, class_name: 'User', optional: true
 
     validates :headline, presence: true
-    validates :writer_id, comparison: { other_than: :reviewer_id}
-    validates :reviewer_id, comparison: { other_than: :writer_id}
-    # validate :different_users
 
     aasm :column => 'story_status' do
         state :unassigned, initial: true
@@ -90,11 +87,4 @@ class Story < ApplicationRecord
     def has_body?
         !body.blank?
     end
-
-    def different_users
-        if reviewer_id.present? && writer_id.present? && reviewer_id == writer_id
-          errors.add(:base, "Writer and reviewer cannot be the same")
-        end
-    end
-
 end
