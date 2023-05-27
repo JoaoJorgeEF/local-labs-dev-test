@@ -31,3 +31,15 @@
 
 en:
   hello: "Hello world"
+  user_profile:
+    chief_editor: CHIEF EDITOR
+    writer: WRITER
+  story_status:
+    unassigned: UNASSIGNED
+    draft: DRAFT
+    for_review: FOR REVIEW
+    in_review: IN REVIEW
+    pending: PENDING
+    approved: APPROVED
+    published: PUBLISHED
+    archived: ARCHIVED

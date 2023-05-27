@@ -1,0 +1,22 @@
+
+<div class="grid justify-items-end mt-4">
+    <% if user_signed_in? %> 
+    <%= button_to "Logout", destroy_user_session_path, method: :delete %> 
+    <% else %>
+    <%= button_to "Sign in", new_user_session_path %> 
+    <% end %>
+</div>
+
+<div class="grid justify-items-center">
+    <h1 class="font-bold text-2xl"><%= organization.name %></h1>
+</div>
+
+
+<div class="grid justify-items-end">
+    <span class="text-xl">
+        <%= user.name %>
+    </span>
+    <span>
+        <%= t("user_profile.#{user.user_type}") %>
+    </span>
+</div>

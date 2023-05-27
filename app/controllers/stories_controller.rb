@@ -38,13 +38,6 @@ class StoriesController < ApplicationController
 
     if current_user.chief_editor?
       @users = User.where(organization_slug: current_user.organization_slug).where.not(id: current_user.id)
-    elsif current_user.id == @story.reviewer_id
-
-      if @story.for_review?
-        @story.start_review
-        @story.save
-      end
-
     end
     
   end
@@ -55,8 +48,9 @@ class StoriesController < ApplicationController
     if @story.pending?
       @story.back_to_draft
     end
-
-    @story.close_comments_if_has_content
+    if story_params[:writer_id] && @story.unassigned?
+      @story.set_writer
+    end
 
     if @story.update(story_params)
       redirect_to edit_story_path(@story.id)
@@ -74,6 +68,8 @@ class StoriesController < ApplicationController
       case params[:status]
       when "request_review"
         @story.request_review
+      when "start_review"
+        @story.start_review
       when "request_changes"
         @story.request_changes
       when "approve"

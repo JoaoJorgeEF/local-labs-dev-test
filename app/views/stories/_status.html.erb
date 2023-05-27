@@ -1,0 +1,33 @@
+<% if story.draft? %>
+    <button class='border-solid border-2 px-4 py-1 cursor-default bg-gray-300 w-36'>
+        <%= t("story_status.#{story.story_status}") %>
+    </button>
+<% elsif story.for_review? %>
+    <button class='border-solid border-2 px-4 py-1 cursor-default bg-cyan-300 w-36'>
+        <%= t("story_status.#{story.story_status}") %>
+    </button>
+<% elsif story.in_review? %>
+    <button class='border-solid border-2 px-4 py-1 cursor-default bg-yellow-300 w-36'>
+        <%= t("story_status.#{story.story_status}") %>
+    </button>
+<% elsif story.pending? %>
+    <button class='border-solid border-2 px-4 py-1 cursor-default bg-yellow-500 w-36'>
+        <%= t("story_status.#{story.story_status}") %>
+    </button>
+<% elsif story.approved? %>
+    <button class='border-solid border-2 px-4 py-1 cursor-default bg-blue-500 w-36'>
+        <%= t("story_status.#{story.story_status}") %>
+    </button>
+<% elsif story.published? %>
+    <button class='border-solid border-2 px-4 py-1 cursor-default bg-green-500 w-36'>
+        <%= t("story_status.#{story.story_status}") %>
+    </button>
+<% elsif story.archived? %>
+    <button class='border-solid border-2 px-4 py-1 cursor-default bg-cyan-500 w-36'>
+        <%= t("story_status.#{story.story_status}") %>
+    </button>
+<% else %>
+    <button class='border-solid border-2 px-4 py-1 cursor-default w-36'>
+        <%= t("story_status.#{story.story_status}") %>
+    </button>
+<% end %>
